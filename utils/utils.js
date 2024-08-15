@@ -5,6 +5,7 @@ const PLAYER_STATE_KEY = 'PLAYER_STATE';
 const LEARNING_CAP_PERCENTAGE = 0.01;
 const DIVINE_POINT_DIVISOR = 10;
 const LEARNING_SPEED_DIVISOR = 100;
+const DIVINE_POINT_MULTIPLIER = 1;
 
 export function getAttributes(player) {
   if (!player?.attributes) return [];
@@ -112,7 +113,7 @@ export const calculateDivinePoints = (attributes) => {
       points += attributes[key].increasedValue;
     }
   }
-  points = Math.floor(points / DIVINE_POINT_DIVISOR);
+  points = Math.floor((points / DIVINE_POINT_DIVISOR) * DIVINE_POINT_MULTIPLIER);
   return points > 0 ? points : 0;
 };
 

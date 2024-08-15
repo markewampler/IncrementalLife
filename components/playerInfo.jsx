@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import SettingsModal from './SettingsModal';
 import styles from '../utils/styles'; // Import the styles from styles.js
 
-const PlayerInfo = ({ onOpenLocationModal, onOpenPurchaseModal, onOpenClassChangeModal,onOpenSettingsModal }) => {
+const MAX_AGE_DEFAULT = 40;
+
+const PlayerInfo = ({ onOpenLocationModal, onOpenPurchaseModal, onOpenClassChangeModal }) => {
   const player = useSelector(state => state.player);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
@@ -18,7 +20,7 @@ const PlayerInfo = ({ onOpenLocationModal, onOpenPurchaseModal, onOpenClassChang
         <View style={styles.infoRow}>
           <View style={styles.infoColumn}>
             <Text style={styles.header}>Age: {player.age.toFixed(2)}</Text>
-            <Text style={styles.header}>Max: {player.maxAge.toFixed(2)}</Text>
+            <Text style={styles.header}>Max: {player.maxAge.toFixed(2) || MAX_AGE_DEFAULT.toFixed(2)}</Text>
           </View>
           <View style={styles.infoColumn}>
             <Text style={styles.header}>Divine Points</Text>

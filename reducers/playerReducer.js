@@ -1,3 +1,4 @@
+import { calculateMaxAge } from "../data/playerData";
 const AGE_INCREMENT = 0.0025
 
 const initialState = {
@@ -15,10 +16,11 @@ const initialState = {
     purchasedItems: [],
     dp: 0,
     age: 8,
+    maxAge: 15,
     wealth: 0,
     className: 'Peasant',
   };
-  
+  calculateMaxAge(initialState.attributes)
   const playerReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'RESET_PLAYER_STATE':

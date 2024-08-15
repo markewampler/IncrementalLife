@@ -21,7 +21,7 @@ export const player = {
     WIS: { value: 10, increasedValue: 0 },
     CHA: { value: 10, increasedValue: 0 }
   },
-  maxAge: 15, // This will be calculated
+  maxAge: MAX_AGE,
   learnedSkills: [],
   purchasedItems: [],
   purchasedLocations: []

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Button } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { classes } from '../data/gameData';
 import styles from '../utils/styles'; // Import the styles from styles.js
@@ -15,12 +15,16 @@ const ClassList = ({ onClassSelect }) => {
   return (
     <View style={styles.classList}>
       {availableClasses.map((classItem) => (
-        <Button
-          style={styles.classListButton}
+        <TouchableOpacity
+          style={[
+            styles.classListButton,
+            player.className === classItem.name && styles.currentClassButton
+          ]}
           key={classItem.name}
-          title={classItem.name}
           onPress={() => onClassSelect(classItem.name)}
-        />
+        >
+          <Text style={styles.classListButtonText}>{player.className === classItem.name && 'Current Class -'} {classItem.name}</Text>
+        </TouchableOpacity>
       ))}
     </View>
   );

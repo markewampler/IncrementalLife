@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import colors from './colors'; 
 
 const styles = StyleSheet.create({
   attributeContainer: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderRadius: 10,
     padding: 5,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: colors.GrayBackgroundColor,
     transitionProperty: 'transform, color',
     transitionDuration: '0.3s',
     transitionTimingFunction: 'ease',
@@ -112,8 +113,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   locationItem: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: colors.GrayBackgroundColor,
     marginBottom: 10,
+    borderRadius: 5,
+
   },
   currentLocationButton: {
     backgroundColor: 'lightgreen',
@@ -173,6 +176,8 @@ const styles = StyleSheet.create({
     cursor: 'not-allowed',
     backgroundColor: 'lightgreen',
     color: 'black',
+    padding: 5,
+    borderRadius: 5,
   },
   itemsContainer: {
     borderWidth: 2,
@@ -207,11 +212,11 @@ const styles = StyleSheet.create({
     transitionTimingFunction: 'ease',
   },
   skillSelected: {
-    backgroundColor: '#b5f5b8',
+    backgroundColor: colors.AlreadySelectedGreen,
   },
   progressBar: {
     width: '100%',
-    backgroundColor: '#e0e0e0',
+    backgroundColor: colors.GrayBackgroundColor,
     borderRadius: 5,
     overflow: 'hidden',
     marginTop: 5,
@@ -265,7 +270,7 @@ const styles = StyleSheet.create({
   },
   SettingsTouchableButtonYes: {
     flex:1,
-    backgroundColor: '#b5f5b8',
+    backgroundColor: colors.AlreadySelectedGreen,
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -290,7 +295,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   SettingsTouchableButton: {
-    backgroundColor: '#526cff',
+    backgroundColor: colors.PastelDeepBlue,
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -304,6 +309,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginTop: 20,
+  },
+  classListButton: {
+    backgroundColor: colors.PastelDeepBlue,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  classListButtonText: {
+    color: 'black',
+    fontSize: 16,
+  },
+  currentClassButton: {
+    opacity: 0.5,
+    pointerEvents: 'none',
   }
 
 });

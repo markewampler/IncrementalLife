@@ -33,14 +33,12 @@ const AppContent = () => {
   const [selectedSkill, setSelectedSkill] = useState(null);
   const [highlightedAttributes, setHighlightedAttributes] = useState([]);
   const [highlightedDivinePoints, setHighlightedDivinePoints] = useState(false);
-  const [availableClasses, setAvailableClasses] = useState(filterClassesByLocationAndAttributes(playerState));
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   const [isClassChangeModalOpen, setIsClassChangeModalOpen] = useState(false);
   const [isMaxAgeModalOpen, setIsMaxAgeModalOpen] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   useEffect(() => {
     const newMaxAge = calculateMaxAge(playerState.attributes);
@@ -204,9 +202,6 @@ const AppContent = () => {
 
   const filteredSkills = filterSkillsByClassAndAttributes(playerState);
 
-  const openSettingsModal = () => setIsSettingsModalOpen(true);
-  const closeSettingsModal = () => setIsSettingsModalOpen(false);
-
   const openLocationModal = () => setIsLocationModalOpen(true);
   const closeLocationModal = () => setIsLocationModalOpen(false);
 
@@ -235,7 +230,6 @@ const AppContent = () => {
           onOpenLocationModal={openLocationModal}
           onOpenPurchaseModal={openPurchaseModal}
           onOpenClassChangeModal={openClassChangeModal}
-          onOpenSettingsModal={openSettingsModal}
         />
         <SkillList
           skills={filteredSkills.map(skill => ({
