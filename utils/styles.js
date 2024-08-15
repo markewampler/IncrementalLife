@@ -93,15 +93,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   playerInfoCustomButton: {
-    backgroundColor: '#7c80f7', 
+    backgroundColor: colors.PastelLightBlue, 
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5, 
     alignItems: 'center',
+    marginVertical: 5,
+    marginHorizontal: 5,
   },
   playerInfoCustomButtonText: {
     color: '#FFFFFF', 
     fontWeight: 'bold',
+    fontSize: 12,
   },
 
   ageDp: {
