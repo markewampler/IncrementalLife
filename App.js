@@ -29,10 +29,10 @@ const TIME_INCREMENT = 140
 const AppContent = () => {
   const playerState = useSelector(state => state.player);
   const dispatch = useDispatch();
-
+  // console.log(playerState)
   const [selectedSkill, setSelectedSkill] = useState(null);
   const [highlightedAttributes, setHighlightedAttributes] = useState([]);
-  const [highlightedDivinePoints, setHighlightedDivinePoints] = useState(false);
+
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   const [isClassChangeModalOpen, setIsClassChangeModalOpen] = useState(false);
@@ -226,7 +226,6 @@ const AppContent = () => {
         </View>
         <PlayerInfo
           player={playerState}
-          highlightedDivinePoints={highlightedDivinePoints}
           onOpenLocationModal={openLocationModal}
           onOpenPurchaseModal={openPurchaseModal}
           onOpenClassChangeModal={openClassChangeModal}

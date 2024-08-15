@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Modal, Button, Alert, ScrollView } from 'react-native';
+import { View, Text, Modal, Button, Alert, ScrollView, SafeAreaView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { locations } from '../data/gameData'; // Ensure this path is correct
 import { deductWealth } from '../utils/utils';
@@ -34,7 +34,7 @@ const LocationChangeModal = ({ isOpen, onClose, onLocationChange }) => {
       animationType="slide"
       onRequestClose={onClose}
     >
-      <View style={styles.modalOverlay}>
+      <SafeAreaView style={styles.safeAreaModalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Change Location</Text>
           <ScrollView>
@@ -61,7 +61,7 @@ const LocationChangeModal = ({ isOpen, onClose, onLocationChange }) => {
             <Button title="Close" onPress={onClose} />
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 };

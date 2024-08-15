@@ -7,9 +7,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     padding: 5,
-    backgroundColor: '#c6cedd',
+    backgroundColor: colors.VeryLightBlue,
     borderRadius: 10,
-    // marginTop: 20,
   },
   attributeCard: {
     flex: 1,
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
   },
   dpAttributeContainer: {
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: colors.GrayBackgroundColor,
     borderRadius: 5,
     padding: 10,
   },
@@ -43,16 +42,38 @@ const styles = StyleSheet.create({
     transitionTimingFunction: 'ease',
   },
   attributeName: {
+    width: 50, // Fixed width for attribute name to align buttons
     textAlign: 'center',
   },
   attributeButtons: {
     flexDirection: 'row',
     gap: 10,
     flex: 1,
+    
+  },
+  attributeButton: {
+    backgroundColor: colors.GrayBackgroundColor,
+    marginHorizontal: 2,
+    padding: 5,
+    borderRadius: 5,
   },
   attributeValue: {
     textAlign: 'center',
-
+  },
+  attributeControl: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', 
+    marginBottom: 10,
+  },
+  maxAgeAttributeValue: {
+    textAlign: 'center',
+    backgroundColor: colors.VeryLightBlue,
+    padding: 5,
+  },
+  highlightedAttributeValue: {
+    backgroundColor: colors.AlreadySelectedGreen,
+    fontWeight: 'bold',
   },
 
   playerInfo: {
@@ -122,7 +143,7 @@ const styles = StyleSheet.create({
 
   },
   currentLocationButton: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: colors.AlreadySelectedGreen,
     cursor: 'not-allowed',
     color: 'black',
   },
@@ -130,25 +151,25 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
   },
-  modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
+  safeAreaModalContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    zIndex: 1000,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingTop: 10, // Padding from the top of the safe area
   },
   modalContent: {
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
-    maxWidth: 900,
-    width: '80%',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    marginTop: 10, // Ensure there's space between the top of the safe area and the modal
+    width: '90%',
+    maxWidth: '90%',
+    maxHeight: '90%',
+    overflow: 'hidden',
   },
+
+  
   modalButtons: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -169,27 +190,41 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flexDirection: 'row',
-    gap: 20,
-    padding: 10,
+    gap: 10,
+    paddingVertical: 5,
   },
   purchasedItem: {
     pointerEvents: 'none',
   },
   purchasedItemButton: {
-    cursor: 'not-allowed',
-    backgroundColor: 'lightgreen',
+    backgroundColor: colors.VeryLightBlue,
     color: 'black',
     padding: 5,
     borderRadius: 5,
+    margin: 3,
   },
   itemsContainer: {
     borderWidth: 2,
-    borderColor: 'gray',
+    borderColor: colors.GrayBackgroundColor,
     padding: 5,
+  },
+  purchaseButton: {
+    borderRadius: 5,
+    backgroundColor: colors.GrayBackgroundColor,
+    paddingVertical: 3,
+    paddingHorizontal: 5,
+    margin: 3,
+  },
+  currentRoundPurchasedButton: {
+    borderRadius: 5,
+    backgroundColor: colors.AlreadySelectedGreen,
+    paddingVertical: 3,
+    paddingHorizontal: 5,
+    margin: 3,
   },
   locationsContainer: {
     borderWidth: 2,
-    borderColor: 'silver',
+    borderColor: colors.GrayBackgroundColor,
     padding: 5,
   },
   warningText: {
@@ -297,8 +332,14 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
   },
-  SettingsTouchableButton: {
+  SettingsTouchableButtonHardReset: {
     backgroundColor: colors.PastelDeepBlue,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  SettingsTouchableButton: {
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -314,7 +355,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   classListButton: {
-    backgroundColor: colors.PastelDeepBlue,
+    backgroundColor: colors.GrayBackgroundColor,
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -327,7 +368,66 @@ const styles = StyleSheet.create({
   currentClassButton: {
     opacity: 0.5,
     pointerEvents: 'none',
-  }
+    backgroundColor: colors.AlreadySelectedGreen,
+  },
+  tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgrey',
+  },
+  tabButton: {
+    padding: 10,
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: colors.GrayBackgroundColor,
+  },
+  tabButtonSelected: {
+    borderBottomWidth: 2,
+    borderBottomColor: 'green',
+    backgroundColor: colors.AlreadySelectedGreen,
+  },
+  tabButtonText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  MaxAgemodalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  defaultButton: {
+    backgroundColor: colors.PastelLightBlue,
+    padding: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  setDefaultButton: {
+    backgroundColor: colors.AlreadySelectedGreen,
+    padding: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  selectedDefaultButton: {
+    backgroundColor: colors.AlreadySelectedGreen,
+    opacity: 0.5,
+    pointerEvents: 'none',
+  },
+  maxAgeLocationItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  disabledButton: {
+    opacity: 0.5,
+    pointerEvents: 'none',
+  },
 
 });
 

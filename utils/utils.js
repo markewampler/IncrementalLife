@@ -2,10 +2,10 @@ import { classes, skills as allSkills } from '../data/gameData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PLAYER_STATE_KEY = 'PLAYER_STATE';
-const LEARNING_CAP_PERCENTAGE = 0.01;
+const LEARNING_CAP_PERCENTAGE = 1; //.01 normal values
 const DIVINE_POINT_DIVISOR = 10;
-const LEARNING_SPEED_DIVISOR = 100;
-const DIVINE_POINT_MULTIPLIER = 1;
+const LEARNING_SPEED_DIVISOR = 1; // 100 normal values
+const DIVINE_POINT_MULTIPLIER = 10;
 
 export function getAttributes(player) {
   if (!player?.attributes) return [];

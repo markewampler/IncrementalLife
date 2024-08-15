@@ -24,7 +24,7 @@ export const player = {
   maxAge: MAX_AGE,
   learnedSkills: [],
   purchasedItems: [],
-  purchasedLocations: []
+  purchasedLocations: ['Forest']
 };
 
 export const calculateMaxAge = (attributes) => {

@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, SafeAreaView, Button} from 'react-native';
 import { useDispatch } from 'react-redux';
 import styles from '../utils/styles'; // Import the styles from styles.js
 
@@ -36,10 +36,10 @@ const SettingsModal = ({ isOpen, onClose }) => {
       animationType="slide"
       onRequestClose={onClose}
     >
-      <View style={styles.modalOverlay}>
+              <SafeAreaView style={styles.safeAreaModalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Settings</Text>
-          <TouchableOpacity style={styles.SettingsTouchableButton} onPress={handleHardReset}>
+          <TouchableOpacity style={styles.SettingsTouchableButtonHardReset} onPress={handleHardReset}>
             <Text style={styles.SettingsTouchableButtonText}>Hard Reset</Text>
           </TouchableOpacity>
           {confirmVisible && (
@@ -55,13 +55,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
               </View>
             </View>
           )}
+          
           <View style={styles.modalButtons}>
-            <TouchableOpacity style={styles.SettingsTouchableButton} onPress={onClose}>
-              <Text style={styles.SettingsTouchableButtonText}>Close</Text>
-            </TouchableOpacity>
+            <Button title="Close" onPress={onClose} />
           </View>
         </View>
-      </View>
+        </SafeAreaView>
     </Modal>
   );
 };

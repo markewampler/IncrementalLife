@@ -1,5 +1,5 @@
 import { calculateMaxAge } from "../data/playerData";
-const AGE_INCREMENT = 0.0025
+const AGE_INCREMENT = .25
 
 const initialState = {
     location: 'Forest',

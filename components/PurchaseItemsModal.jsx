@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Modal, Button, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Modal, Button, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 import styles from '../utils/styles'; // Import the styles from styles.js
 
@@ -16,7 +16,7 @@ const PurchaseItemsModal = ({ isOpen, onClose, onPurchaseItem, items }) => {
       animationType="slide"
       onRequestClose={onClose}
     >
-      <View style={styles.modalOverlay}>
+      <SafeAreaView style={styles.safeAreaModalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Purchase Items</Text>
           <ScrollView>
@@ -41,7 +41,8 @@ const PurchaseItemsModal = ({ isOpen, onClose, onPurchaseItem, items }) => {
             <Button title="Close" onPress={onClose} />
           </View>
         </View>
-      </View>
+
+      </SafeAreaView>
     </Modal>
   );
 };

@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Modal, Button } from 'react-native';
+import { View, Text, Modal, Button, SafeAreaView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import ClassList from './ClassList';
 import styles from '../utils/styles'; // Import the styles from styles.js
+
 
 const ClassChangeModal = ({ isOpen, onClose, onClassChange }) => {
   const player = useSelector(state => state.player);
@@ -24,7 +25,8 @@ const ClassChangeModal = ({ isOpen, onClose, onClassChange }) => {
       animationType="slide"
       onRequestClose={onClose}
     >
-      <View style={styles.modalOverlay}>
+      <SafeAreaView style={styles.safeAreaModalContainer}>
+
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Change Class</Text>
           <ClassList player={player} onClassSelect={handleClassSelect} />
@@ -32,7 +34,8 @@ const ClassChangeModal = ({ isOpen, onClose, onClassChange }) => {
             <Button title="Close" onPress={onClose} />
           </View>
         </View>
-      </View>
+
+      </SafeAreaView>
     </Modal>
   );
 };

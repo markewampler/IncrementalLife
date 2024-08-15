@@ -9,6 +9,8 @@ export default {
     GrayBackgroundColor: '#e0e0e0',
     AlreadySelectedGreen: '#b5f5b8',
     PastelDeepBlue: '#526cff',
-    PastelLightBlue: '#7c80f7'
+    PastelLightBlue: '#7c80f7',
+    VeryLightBlue: '#c6cedd'
+
     // Add more colors as needed
   };
