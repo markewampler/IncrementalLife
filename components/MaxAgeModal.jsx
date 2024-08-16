@@ -288,7 +288,14 @@ const MaxAgeModal = ({ isOpen, onClose, onSoftReset }) => {
           ? 'You must spend all divine points before proceeding.'
           : 'You have spent all your divine points, proceed!'}
       </Text>
-      <Button title="Start over with new values!" onPress={handleSoftReset} disabled={availableDivinePoints > 0} />
+      <View>
+        <TouchableOpacity 
+          style={availableDivinePoints > 0 ? styles.StartOverButtonDisabled : styles.StartOverButton}
+          onPress={handleSoftReset} 
+          disabled={availableDivinePoints > 0}>
+          <Text style={styles.StartOverButtonText}>Start over with new benefits!</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   </SafeAreaView>
 </Modal>

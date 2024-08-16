@@ -428,6 +428,22 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     pointerEvents: 'none',
   },
+  StartOverButton: {
+    backgroundColor: colors.AlreadySelectedGreen,
+    margin: 5,
+    padding: 5,
+    borderRadius: 5,
+  },
+  StartOverButtonText: {
+    textAlign: 'center',
+  },
+  StartOverButtonDisabled: {
+    backgroundColor: colors.GrayBackgroundColor,
+    margin: 5,
+    padding: 5,
+    opacity: .5,
+    borderRadius: 5,
+  },
 
 });
 
