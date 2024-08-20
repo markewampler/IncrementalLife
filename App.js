@@ -1,9 +1,8 @@
-// App.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, Animated } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import AttributeCard from './components/AttributeCard';
 import PlayerInfo from './components/playerInfo';
@@ -20,25 +19,25 @@ import {
   addWealth,
   calculateDivinePoints
 } from './utils/utils';
-import {calculateMaxAge} from './data/playerData'
+import { calculateMaxAge } from './data/playerData';
 import { items, locations } from './data/gameData';
-// import { SafeAreaView } from 'react-native-safe-area-context';
 
-const TIME_INCREMENT = 140
+const TIME_INCREMENT = 140;
 
 const AppContent = () => {
   const playerState = useSelector(state => state.player);
   const dispatch = useDispatch();
-  // console.log(playerState)
   const [selectedSkill, setSelectedSkill] = useState(null);
   const [highlightedAttributes, setHighlightedAttributes] = useState([]);
-
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   const [isClassChangeModalOpen, setIsClassChangeModalOpen] = useState(false);
   const [isMaxAgeModalOpen, setIsMaxAgeModalOpen] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
+  const [newlyAvailableClasses, setNewlyAvailableClasses] = useState([]);
+  const opacityAnim = useRef(new Animated.Value(1)).current;
+  const [animateClassButton, setAnimateClassButton] = useState(false);
 
   useEffect(() => {
     const newMaxAge = calculateMaxAge(playerState.attributes);
@@ -55,6 +54,20 @@ const AppContent = () => {
   }, [playerState.age, playerState.maxAge, gameStarted]);
 
   useEffect(() => {
+    const availableClasses = filterClassesByLocationAndAttributes(playerState);
+
+    // Filter out the "Peasant" class
+    const newlyAvailable = availableClasses
+        .filter(classItem => !newlyAvailableClasses.includes(classItem.name))
+        .filter(classItem => classItem.name !== "Peasant");
+
+    if (newlyAvailable.length > 0) {
+        setNewlyAvailableClasses([...newlyAvailableClasses, ...newlyAvailable.map(classItem => classItem.name)]);
+        setAnimateClassButton(true);
+    }
+}, [playerState.attributes, playerState.location]);
+
+  useEffect(() => {
     setGameStarted(true);
   }, []);
 
@@ -62,56 +75,51 @@ const AppContent = () => {
     if (!selectedSkill || gamePaused) {
       return;
     }
-  
+
     const intervalId = setInterval(() => {
       dispatch({ type: 'INCREMENT_AGE' });
-  
+
       const learningSpeed = calculateLearningSpeed(playerState, selectedSkill);
       const existingSkill = playerState.learnedSkills.find(skill => skill.id === selectedSkill.id);
       const updatedSkill = {
         id: selectedSkill.id,
         learned: Math.min((existingSkill?.learned || 0) + learningSpeed, selectedSkill.learningTime),
       };
-  
+
       let updatedLearnedSkills = playerState.learnedSkills.map(skill =>
         skill.id === updatedSkill.id ? updatedSkill : skill
       );
-  
+
       if (!existingSkill) {
         updatedLearnedSkills.push(updatedSkill);
       }
-  
+
       if (updatedSkill.learned >= selectedSkill.learningTime) {
         Object.entries(selectedSkill.effects).forEach(([attr, amount]) => {
           dispatch({ type: 'UPDATE_ATTRIBUTES', payload: { attribute: attr, amount, type: 'increasedValue' } });
         });
-  
+
         setHighlightedAttributes(Object.keys(selectedSkill.effects));
-  
+
         const updatedWealth = addWealth(playerState.wealth, parseInt(selectedSkill.moneyEarned));
         const earnedDP = calculateDivinePoints(playerState.attributes);
-  
-        // if (earnedDP > playerState.dp) {
-        //   setHighlightedDivinePoints(true);
-        // }
 
         // Reset the learned value for the skill
         const resetSkill = { ...updatedSkill, learned: 0 };
         updatedLearnedSkills = updatedLearnedSkills.map(skill =>
           skill.id === resetSkill.id ? resetSkill : skill
         );
-  
+
         dispatch({ type: 'SET_PLAYER_STATE', payload: { learnedSkills: updatedLearnedSkills, wealth: updatedWealth, dp: earnedDP } });
-  
+
         setTimeout(() => {
-          // setHighlightedDivinePoints(false);
           setHighlightedAttributes([]);
         }, 3000);
       } else {
         dispatch({ type: 'SET_PLAYER_STATE', payload: { learnedSkills: updatedLearnedSkills } });
       }
     }, TIME_INCREMENT);
-  
+
     return () => {
       clearInterval(intervalId);
     };
@@ -163,6 +171,7 @@ const AppContent = () => {
     };
 
     dispatch({ type: 'SET_PLAYER_STATE', payload: newState });
+    setNewlyAvailableClasses(['Peasant']);
     setSelectedSkill(null);
     setGamePaused(false);
   };
@@ -178,7 +187,6 @@ const AppContent = () => {
 
   const handleLocationChange = (newLocation, updatedWealth) => {
     dispatch({ type: 'SET_PLAYER_STATE', payload: { location: newLocation, wealth: updatedWealth } });
-    setAvailableClasses(filterClassesByLocationAndAttributes({ ...playerState, location: newLocation }));
     setSelectedSkill(null);
   };
 
@@ -202,88 +210,92 @@ const AppContent = () => {
 
   const filteredSkills = filterSkillsByClassAndAttributes(playerState);
 
-  const openLocationModal = () => setIsLocationModalOpen(true);
-  const closeLocationModal = () => setIsLocationModalOpen(false);
+const openLocationModal = () => setIsLocationModalOpen(true);
+const closeLocationModal = () => setIsLocationModalOpen(false);
 
-  const openPurchaseModal = () => setIsPurchaseModalOpen(true);
-  const closePurchaseModal = () => setIsPurchaseModalOpen(false);
+const openPurchaseModal = () => setIsPurchaseModalOpen(true);
+const closePurchaseModal = () => setIsPurchaseModalOpen(false);
 
-  const openClassChangeModal = () => setIsClassChangeModalOpen(true);
-  const closeClassChangeModal = () => setIsClassChangeModalOpen(false);
+const openClassChangeModal = () => {
+  setIsClassChangeModalOpen(true);
+  setAnimateClassButton(false); // Stop the animation when the modal is opened
+};
+const closeClassChangeModal = () => {
+  setIsClassChangeModalOpen(false);
+};
 
-  return (
-
-      <ScrollView style={styles.appContainer}>
+return (
+    <ScrollView style={styles.appContainer}>
         <View style={styles.attributeContainer}>
-          {Object.keys(derivedAttributes).map((key, index) => (
-            <AttributeCard
-              key={index}
-              name={key}
-              value={derivedAttributes[key]}
-              highlighted={highlightedAttributes.includes(key)}
-            />
-          ))}
+            {Object.keys(derivedAttributes).map((key, index) => (
+                <AttributeCard
+                    key={index}
+                    name={key}
+                    value={derivedAttributes[key]}
+                    highlighted={highlightedAttributes.includes(key)}
+                />
+            ))}
         </View>
         <PlayerInfo
           player={playerState}
           onOpenLocationModal={openLocationModal}
           onOpenPurchaseModal={openPurchaseModal}
           onOpenClassChangeModal={openClassChangeModal}
+          animateClassButton={animateClassButton} 
         />
         <SkillList
-          skills={filteredSkills.map(skill => ({
-            ...skill,
-            learnedProgress: playerState.learnedSkills.find(s => s.id === skill.id)?.learned || 0
-          }))}
-          selectedSkill={selectedSkill}
-          onSelectSkill={handleSelectSkill}
+            skills={filteredSkills.map(skill => ({
+                ...skill,
+                learnedProgress: playerState.learnedSkills.find(s => s.id === skill.id)?.learned || 0
+            }))}
+            selectedSkill={selectedSkill}
+            onSelectSkill={handleSelectSkill}
         />
         {isLocationModalOpen && (
-          <LocationChangeModal
-            isOpen={isLocationModalOpen}
-            player={playerState}
-            locations={locations}
-            currentLocation={playerState.location}
-            onLocationChange={handleLocationChange}
-            onClose={closeLocationModal}
-          />
+            <LocationChangeModal
+                isOpen={isLocationModalOpen}
+                player={playerState}
+                locations={locations}
+                currentLocation={playerState.location}
+                onLocationChange={handleLocationChange}
+                onClose={closeLocationModal}
+            />
         )}
         {isPurchaseModalOpen && (
-          <PurchaseItemsModal
-            isOpen={isPurchaseModalOpen}
-            onClose={closePurchaseModal}
-            onPurchaseItem={handlePurchaseItem}
-            items={items}
-            playerItems={playerState.purchasedItems}
-            wealth={playerState.wealth}
-            playerLocation={playerState.location}
-          />
+            <PurchaseItemsModal
+                isOpen={isPurchaseModalOpen}
+                onClose={closePurchaseModal}
+                onPurchaseItem={handlePurchaseItem}
+                items={items}
+                playerItems={playerState.purchasedItems}
+                wealth={playerState.wealth}
+                playerLocation={playerState.location}
+            />
         )}
         {isClassChangeModalOpen && (
-          <ClassChangeModal
-            isOpen={isClassChangeModalOpen}
-            player={playerState}
-            onClassChange={handleClassChange}
-            onClose={closeClassChangeModal}
-          />
+            <ClassChangeModal
+                isOpen={isClassChangeModalOpen}
+                player={playerState}
+                onClassChange={handleClassChange}
+                onClose={closeClassChangeModal}
+            />
         )}
         {isMaxAgeModalOpen && (
-          <MaxAgeModal
-            isOpen={isMaxAgeModalOpen}
-            onClose={() => setIsMaxAgeModalOpen(false)}
-            onSoftReset={handleSoftReset}
-            attributes={playerState.attributes}
-            divinePoints={playerState.dp}
-            items={playerState.purchasedItems}
-            locations={locations}
-            defaultLocation={playerState.defaultLocation}
-            playerItems={playerState.purchasedItems}
-            player={playerState}
-          />
+            <MaxAgeModal
+                isOpen={isMaxAgeModalOpen}
+                onClose={() => setIsMaxAgeModalOpen(false)}
+                onSoftReset={handleSoftReset}
+                attributes={playerState.attributes}
+                divinePoints={playerState.dp}
+                items={playerState.purchasedItems}
+                locations={locations}
+                defaultLocation={playerState.defaultLocation}
+                playerItems={playerState.purchasedItems}
+                player={playerState}
+            />
         )}
-      </ScrollView>
-
-  );
+    </ScrollView>
+);
 };
 
 const App = () => (

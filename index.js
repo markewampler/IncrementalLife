@@ -1,15 +1,5 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './store';
-import App from './App';
+import { AppRegistry } from 'react-native';
+import Root from './Root';
+import { name as appName } from './app.json';
 
-const Root = () => (
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-    </PersistGate>
-  </Provider>
-);
-
-export default Root;
+AppRegistry.registerComponent(appName, () => Root);
