@@ -2,51 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, Button, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { items as gameItems, locations as gameLocations } from '../data/gameData';
-import styles from '../utils/styles';
-import { AdMobRewarded } from 'expo-ads-admob';
+import styles from '../utils/styles'; // Import the styles from styles.js
 
 
 const MaxAgeModal = ({ isOpen, onClose, onSoftReset }) => {
   const player = useSelector(state => state.player);
   const dispatch = useDispatch();
 
-  const [availableDivinePoints, setAvailableDivinePoints] = useState(player.dp || 0); // Default to 0 if undefined
-  const [tempAttributes, setTempAttributes] = useState(player.attributes ? { ...player.attributes } : {}); // Default to an empty object
+  const [availableDivinePoints, setAvailableDivinePoints] = useState(player.dp);
+  const [tempAttributes, setTempAttributes] = useState({});
   const [initialValues, setInitialValues] = useState({});
-  const [selectedLocation, setSelectedLocation] = useState(player.defaultLocation || ''); // Default to an empty string
+  const [selectedLocation, setSelectedLocation] = useState(player.defaultLocation);
   const [updatedItems, setUpdatedItems] = useState([]);
   const [updatedLocations, setUpdatedLocations] = useState({});
   const [selectedTab, setSelectedTab] = useState('attributes');
 
   const previouslyPurchasedItems = player.purchasedItems.filter(item => item.divinePointPurchase);
   const previouslyPurchasedLocations = player.purchasedLocations;
-
-
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     setAvailableDivinePoints(player.dp || 0);
-  //     setTempAttributes({ ...player.attributes });
-  //     setInitialValues(Object.keys(player.attributes).reduce((acc, key) => {
-  //       acc[key] = player.attributes[key].value;
-  //       return acc;
-  //     }, {}));
-
-  //     // Initialize AdMob and load the ad
-  //     AdMobRewarded.setAdUnitID('ca-app-pub-3940256099942544/1712485313'); // Test Ad Unit ID
-  //     AdMobRewarded.requestAdAsync().catch(error => console.warn(error));
-
-  //     // Listener for when the user earns the reward
-  //     const rewardedListener = AdMobRewarded.addEventListener('rewardedVideoUserDidEarnReward', () => {
-  //       const newDivinePoints = calculateDivinePoints(tempAttributes, 1.5); // Apply the multiplier
-  //       setAvailableDivinePoints(newDivinePoints); // Update state with the new divine points
-  //     });
-
-  //     return () => {
-  //       rewardedListener.remove();
-  //       AdMobRewarded.removeAllListeners();
-  //     };
-  //   }
-  // }, [isOpen, player]);
 
   useEffect(() => {
     if (isOpen) {
@@ -284,14 +256,7 @@ const MaxAgeModal = ({ isOpen, onClose, onSoftReset }) => {
     <View style={styles.modalContent}>
       <Text style={styles.MaxAgemodalTitle}>Max Age Reached</Text>
       <Text>You have <Text style={styles.MaxAgemodalTitle}>{availableDivinePoints}</Text> divine points to spend on permanent upgrades below:</Text>
-      {/* <TouchableOpacity 
-          style={styles.adButton}
-          onPress={async () => {
-            await AdMobRewarded.showAdAsync().catch(error => console.warn(error));
-          }}
-        >
-          <Text style={styles.adButtonText}>Watch Ad to Multiply Divine Points by 1.5</Text>
-        </TouchableOpacity> */}
+
       <View style={styles.tabBar}>
         <TouchableOpacity
           style={[styles.tabButton, selectedTab === 'attributes' && styles.tabButtonSelected]}

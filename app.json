@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Incremental_Expo",
-    "slug": "incremental-life",
+    "slug": "Incremental_Expo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,12 +24,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "cef474ff-e214-4ac5-9e4b-d1d8cc958751"
-      }
-    },
-    "owner": "markwampler-org"
+    }
   }
 }
